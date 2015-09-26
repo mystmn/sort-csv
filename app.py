@@ -8,9 +8,12 @@ This file creates your application.
 import sys, os
 sys.dont_write_bytecode = True
 
-from flask import Flask, render_template, stream_with_context, request, Response, redirect, url_for, flash
+from flask import Flask, render_template
+from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///storage/test.db'
+db = SQLAlchemy(app)
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'x6dgbjldprk3lm52')
 
