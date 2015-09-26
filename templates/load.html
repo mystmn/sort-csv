@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block main_content %}
+<h2>Load Page</h2>
+{{test}}
+{{users}}
+{% for g in users %}
+{{g}}
+{% endfor %}
+{% endblock %}
+

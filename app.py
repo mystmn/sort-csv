@@ -17,11 +17,36 @@ db = SQLAlchemy(app)
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'x6dgbjldprk3lm52')
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True)
+    email = db.Column(db.String(120), unique=True)
+
+    def __init__(self, username, email):
+        self.username = username
+        self.email = email
+
+    def __repr__(self):
+        return '<User %r>' % self.username
 
 @app.route('/')
 def home():
+    from app import db
+    db.create_all()
+    admin = User('justin', '2@example.com')
+    guest = User('paul', '3@example.com')
+    db.session.add(admin)
+    db.session.add(guest)
+    db.session.commit()
     """Render website's home page."""
     return render_template('home.html')
+
+@app.route('/load')
+def load():
+    users = User.query.all()
+    test = "paul"
+    admin = User.query.filter_by(username='admin').first()
+    return render_template('load.html', user=admin, test=test)
 
 @app.after_request
 def add_header(response):
