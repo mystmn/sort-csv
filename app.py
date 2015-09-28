@@ -3,6 +3,10 @@ Flask Documentation:     http://flask.pocoo.org/docs/
 Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
 Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 
+# Starting app in venu
+. venv/bin/activate
+
+
 This file creates your application.
 """
 import sys, os
@@ -43,10 +47,11 @@ def home():
 
 @app.route('/load')
 def load():
-    users = User.query.all()
-    test = "paul"
-    admin = User.query.filter_by(username='admin').first()
-    return render_template('load.html', user=admin, test=test)
+    admin = User.query.with_entities(User.id, User.username, User.email)
+    #admin = User.query.order_by(User.id.asc()).limit(10).all()
+    #admin = User.query.filter(User.email.endswith('@example.com')).order_by(User.id.asc())
+    #admin = User.query.filter(User.email.startswith('guest')).order_by(User.id.asc())
+    return render_template('load.html', admin=admin)
 
 @app.after_request
 def add_header(response):
