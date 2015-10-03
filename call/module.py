@@ -3,11 +3,13 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///storage/test.db'
-db = SQLAlchemy(app)
 
-def mod_call_db():
-    from app import db
-    pass
+class test(object, db):
+    def __init__(self):
+        db = SQLAlchemy(app)
+
+    def test(self):
+        return db.create_all()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
