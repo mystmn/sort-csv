@@ -13,29 +13,12 @@ import sys, os
 sys.dont_write_bytecode = True
 
 from flask import Flask, render_template
-from flask.ext.sqlalchemy import SQLAlchemy
-
+from call.module import User, mod_call_db as db
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///storage/test.db'
-db = SQLAlchemy(app)
-
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'x6dgbjldprk3lm52')
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(120), unique=True)
-
-    def __init__(self, username, email):
-        self.username = username
-        self.email = email
-
-    def __repr__(self):
-        return '<User %r>' % self.username
+#app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'x6dgbjldprk3lm52')
 
 @app.route('/')
 def home():
-    from app import db
     db.create_all()
     admin = User('justin', '2@example.com')
     guest = User('paul', '3@example.com')
