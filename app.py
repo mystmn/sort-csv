@@ -34,6 +34,9 @@ def home():
     """Render website's home page."""
     return render_template('home.html')
 
+@app.route('/new')
+def upload():
+    return render_template('create.html', )
 
 @app.route('/load')
 def load():
