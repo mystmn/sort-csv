@@ -1,48 +1,36 @@
+import sys
+sys.dont_write_bytecode = True
+
 """
 Flask Documentation:     http://flask.pocoo.org/docs/
 Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
 Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 
 # Starting app in venu
+virtualenv venv
 . venv/bin/activate
 
 
 This file creates your application.
 """
-import sys, os
-
-sys.dont_write_bytecode = True
 
 from flask import Flask, render_template
-#from call.module import User
-from flask.ext.sqlalchemy import SQLAlchemy
-
+from models.user import User, db
+from models.helper.config import Config
 app = Flask(__name__)
-db = SQLAlchemy(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///call/storage/test.db'
 
-# app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'x6dgbjldprk3lm52')
+db.init_app(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = Config.DB_ROUTE
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=False)
-    email = db.Column(db.String(120), unique=False)
-
-    def __init__(self, username, email):
-        self.username = username
-        self.email = email
-
-    def __repr__(self):
-        return '<User %r>' % self.username
 
 @app.route('/')
 def home():
-    #db.create_all()
-    admin = User('justin', '2@example.com')
-    guest = User('paul', '3@example.com')
-    #db.session.add(admin)
-    #db.session.add(guest)
-    #db.session.commit()
+#    db.create_all()
+#    admin = User('justin64', '1232@example.com')
+#    guest = User('paul123', '1233@example.com')
+#    db.session.add(admin)
+#    db.session.add(guest)
+#    db.session.commit()
     """Render website's home page."""
     return render_template('home.html')
 
